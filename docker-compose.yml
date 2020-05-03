@@ -1,0 +1,27 @@
+version: '3'
+services:
+  redis-cluster-builder:
+    image: redis-cluster-builder
+    build: builder
+    environment:
+      CLUSTER_SPEC: redis-1:7000, redis-2:7001, redis-3:7002
+    depends_on:
+      - redis-1
+      - redis-2
+      - redis-3
+
+  redis-1:
+    image: redis-cluster-node
+    build: node
+    ports:
+      - 7000:7000
+    environment:
+      REDIS_PORT: 7000
+  redis-2:
+    image: redis-cluster-node
+    environment:
+      REDIS_PORT: 7001
+  redis-3:
+    image: redis-cluster-node
+    environment:
+      REDIS_PORT: 7002
